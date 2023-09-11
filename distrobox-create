@@ -74,10 +74,20 @@ unshare_netns=0
 # We're not using "realpath" here so that symlinks are not resolved this way
 # "realpath" would break situations like Nix or similar symlink based package
 # management.
-distrobox_entrypoint_path="$(cd "$(dirname "${0}")" && pwd)/distrobox-init"
-distrobox_export_path="$(cd "$(dirname "${0}")" && pwd)/distrobox-export"
-distrobox_genentry_path="$(cd "$(dirname "${0}")" && pwd)/distrobox-generate-entry"
-distrobox_hostexec_path="$(cd "$(dirname "${0}")" && pwd)/distrobox-host-exec"
+
+
+mkdir "${HOME}/.local/share/distrobox"
+cp "$(realpath "$(cd "$(dirname "${0}")" && pwd)/distrobox-init")" "${HOME}/.local/share/distrobox"
+cp "$(realpath "$(cd "$(dirname "${0}")" && pwd)/distrobox-export")" "${HOME}/.local/share/distrobox"
+cp "$(realpath "$(cd "$(dirname "${0}")" && pwd)/distrobox-generate-entry")" "${HOME}/.local/share/distrobox"
+cp "$(realpath "$(cd "$(dirname "${0}")" && pwd)/distrobox-host-exec")" "${HOME}/.local/share/distrobox"
+
+cd "${HOME}/.local/share/distrobox"
+
+distrobox_entrypoint_path="${HOME}/.local/share/distrobox/distrobox-init"
+distrobox_export_path="${HOME}/.local/share/distrobox/distrobox-export"
+distrobox_genentry_path="${HOME}/.local/share/distrobox/distrobox-generate-entry"
+distrobox_hostexec_path="${HOME}/.local/share/distrobox/distrobox-host-exec"
 # In case some of the scripts are not in the same path as create, let's search
 # in PATH for them.
 [ ! -e "${distrobox_entrypoint_path}" ] && distrobox_entrypoint_path="$(command -v distrobox-init)"
